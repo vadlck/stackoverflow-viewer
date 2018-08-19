@@ -1,0 +1,22 @@
+@import './reset-default-styles';
+@import './mixins';
+*,
+*::after,
+*::before {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-size: 1.6rem;
+    font-family: "Open Sans", sans-serif;
+    color: #3e454c;
+	background-color: #ffffff;
+}
+
+a {
+    text-decoration: none;
+}

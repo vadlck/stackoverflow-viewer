@@ -1,0 +1,4 @@
+export const ADD_QUESTIONS = 'ADD_QUESTIONS';
+export const SHOW_ERROR = 'SHOW_ERROR';
+export const UPDATE_STATE = 'UPDATE_STATE';
+export const CLOSE_QUESTION_DETAIL = 'CLOSE_QUESTION_DETAIL';

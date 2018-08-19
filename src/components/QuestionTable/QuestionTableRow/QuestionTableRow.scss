@@ -1,0 +1,11 @@
+.question-table__row {
+    display: table-row;
+    cursor: pointer;
+    &:hover {
+		background-color: #a6a6a6;
+		color: white;
+    }
+    .question-table__cell {
+        @include table-cell();
+    }
+}
