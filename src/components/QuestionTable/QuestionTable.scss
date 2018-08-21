@@ -22,7 +22,7 @@
         position: fixed;
         top: 0px;
         max-width: 750px;
-        width: 100%;
+        width: calc(100% - 15px);
         background-color: whitesmoke;
         .question-table__header-item {
             @include table-cell();

@@ -3,13 +3,14 @@ import reduser from './reducer';
 import thunk from 'redux-thunk';
 import moment from 'moment';
 
+const dateNow = moment().unix();
 const initialState = {
 	questions: [],
 	page: 1,
-	lastQuestionsLoadDateTime: moment().unix(),
-	firstQuestionsLoadDateTime: moment().unix(),
+	_dtLatestQuestionsLoad: dateNow,
+	_dtAfterStartAppQuestionsLoad: dateNow,
 	isLoading: true,
-	detailedQuestion: null,
+	openedQuestionDetail: null,
 	errorMessage: null
 }
 
