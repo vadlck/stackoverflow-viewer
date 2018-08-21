@@ -1,5 +1,4 @@
-Запускаем без сервера
-- изначально проект уже собран и можно открыть public/index.html
+[demo](https://vadlck.github.io/stackoverflow-viewer/public/index.html)
 
 Запускаем вместе с сервером
 - устанавливаем зависимые пакеты, npm install
