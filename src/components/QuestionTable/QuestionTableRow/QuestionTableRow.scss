@@ -1,11 +1,13 @@
 .question-table__row {
     display: table-row;
-    cursor: pointer;
+	cursor: pointer;
+	width: calc(100% - 15px);
+	
     &:hover {
 		background-color: #a6a6a6;
 		color: white;
     }
     .question-table__cell {
-        @include table-cell();
+		@include table-cell();
     }
 }

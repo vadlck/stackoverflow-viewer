@@ -67,11 +67,13 @@ class QuestionTable extends Component {
 				<div className="question-table__header-item">Заголовок</div>
 				<div className="question-table__header-item">Дата создания</div>
 			</div>
-			<div className="question-table__body"
+			<div className="question-table__body-wrapper"
 				ref="scrollable"
 				onScroll={this.onScroll}
 				onClick={this.handleBodyClick}>
-				{this.renderTableContent()}
+				<div className="question-table__body">
+					{this.renderTableContent()}
+				</div>
 			</div>
 		</div>
 	}

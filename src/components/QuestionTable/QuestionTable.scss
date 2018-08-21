@@ -6,7 +6,7 @@
     vertical-align: middle;
     border-bottom: 1px solid #606272;
     &:nth-child(2) {
-        width: calc(50% - 18px);
+        width: 50%;
         border-left: 1px solid #606272;
         border-right: 1px solid #606272;
         word-break: break-all;
@@ -22,7 +22,8 @@
         position: fixed;
         top: 0px;
         max-width: 750px;
-        width: calc(100% - 15px);
+		width: 100%;
+		padding-right: 18px;
         background-color: whitesmoke;
         .question-table__header-item {
             @include table-cell();
@@ -33,9 +34,14 @@
             }
         }
     }
-    .question-table__body {
+    .question-table__body-wrapper {
         height: 600px;
-        overflow-y: auto;
+		overflow-y: auto;
+		.question-table__body {
+			display: table;
+			table-layout: fixed;
+			width: 100%;
+		}
     }
     .body-loading {
         width: 100%;
