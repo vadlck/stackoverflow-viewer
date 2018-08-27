@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import QuestionTable from '../components/QuestionTable/QuestionTable';
-import { fetchQuestions, openQuestionDetailModal } from '../store/actions';
+import { fetchQuestions, openQuestionDetail } from '../store/actions';
 
 const mapStateToProps = state => ({
 	questions: state.questions,
@@ -11,7 +11,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
 	fetchQuestions: params => dispatch(fetchQuestions(params)),
-	handleRowClick: question_id => dispatch(openQuestionDetailModal(question_id))
+	handleRowClick: question_id => dispatch(openQuestionDetail(question_id))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionTable);

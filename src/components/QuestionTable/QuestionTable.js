@@ -9,6 +9,11 @@ class QuestionTable extends Component {
 
 	componentDidMount() {
 		this.props.fetchQuestions();
+		window.addEventListener('keydown', this.handleKeyPress)
+	}
+
+	componentWillUnmount() {
+		window.removeEventListener('keydown', this.handleKeyPress)
 	}
 
 	componentWillUpdate(nextProps, nextState) {
@@ -31,7 +36,6 @@ class QuestionTable extends Component {
 		}
 	}
 
-
 	renderTableContent() {
 		const { isLoading, questions } = this.props;
 
@@ -44,25 +48,32 @@ class QuestionTable extends Component {
 	handleBodyClick = ({ target }) => {
 		let parentsCount = 3;
 
-		while (!target.dataset.id || !parentsCount--)
+		while (!(target.dataset && target.dataset.id) || !parentsCount--)
 			target = target.parentElement;
 
 		if (target.dataset.id)
 			this.props.handleRowClick(target.dataset.id);
 	}
 
+	handleKeyPress = event => {
+		if (event.keyCode === 34)
+			this.refs.scrollable.scrollTop = this.refs.scrollable.scrollHeight;
+	}
+
 	render() {
-		return <div className="question-table">
+		return <div className="question-table" >
 			<div className="question-table__header">
 				<div className="question-table__header-item">Автор</div>
 				<div className="question-table__header-item">Заголовок</div>
 				<div className="question-table__header-item">Дата создания</div>
 			</div>
-			<div className="question-table__body"
+			<div className="question-table__body-wrapper"
 				ref="scrollable"
 				onScroll={this.onScroll}
 				onClick={this.handleBodyClick}>
-				{this.renderTableContent()}
+				<div className="question-table__body">
+					{this.renderTableContent()}
+				</div>
 			</div>
 		</div>
 	}

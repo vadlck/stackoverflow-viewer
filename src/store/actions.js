@@ -1,36 +1,39 @@
-import stackOverflowService from '../services/stackOverflowService';
+import StackOverflowQuestions from '../services/StackOverflowQuestions';
 import moment from 'moment';
-import * as types from './types';
+import types from './types';
 
 export function fetchQuestions() {
 	return async (dispatch, getState) => {
 		try {
-			let { page, lastQuestionsLoadDateTime, firstQuestionsLoadDateTime } = getState();
+			let {
+				page,
+				_dtLatestQuestionsLoad,
+				_dtAfterStartAppQuestionsLoad
+			} = getState();
 
 			dispatch(updateState({ isLoading: true }));
 
-			const { data } = await stackOverflowService
-				.getQuestionList({ todate: firstQuestionsLoadDateTime, page });
+			const [afterStartAppQuestionsResponse, latestQuestionsResponse] = await Promise.all([
+				StackOverflowQuestions.getQuestionList({ todate: _dtAfterStartAppQuestionsLoad, page }),
+				StackOverflowQuestions.getQuestionList({ fromdate: _dtLatestQuestionsLoad, page: 1 })
+			]);
 
-			let questions = data.items.map(questionMapper);
+			const afterStartAppQuestions = afterStartAppQuestionsResponse.data.items;
+			const latestQuestions = latestQuestionsResponse.data.items;
 
-			const latestQuestionsResponse = await stackOverflowService.getQuestionList({
-				page: 1,
-				fromdate: lastQuestionsLoadDateTime
-			});
+			let questions = [
+				...latestQuestions.map(questionMapper),
+				...afterStartAppQuestions.map(questionMapper)
+			];
 
-			if (latestQuestionsResponse.data.items.length) {
-				lastQuestionsLoadDateTime = latestQuestionsResponse.data.items[0].creation_date + 1;
-				questions = latestQuestionsResponse.data.items
-					.map(questionMapper)
-					.concat(questions)
-			}
+			if (latestQuestions.length)
+				_dtLatestQuestionsLoad = latestQuestions[0].creation_date + 1;
 
 			dispatch(updateState({
 				isLoading: false,
 				page: page + 1,
-				lastQuestionsLoadDateTime
-			}))
+				_dtLatestQuestionsLoad
+			}));
 
 			dispatch(addQuestions(questions))
 
@@ -43,26 +46,29 @@ export function fetchQuestions() {
 				}
 			}
 		} catch (error) {
-			console.error(error);
 			dispatch(showError(JSON.stringify(error.response.data)))
 		}
 	}
 }
 
-export function openQuestionDetailModal(question_id) {
+export function openQuestionDetail(question_id) {
 	return async dispatch => {
 		try {
-			const { data } = await stackOverflowService.getQuestionItem(question_id);
-			const question = data.items[0];
+			const questionResponse = await StackOverflowQuestions.getQuestionItem(question_id);
 
 			dispatch(updateState({
-				detailedQuestion: question,
+				openedQuestionDetail: questionResponse.data.items[0],
 				isLoading: false
 			}))
 		} catch (error) {
-			console.error(error);
 			dispatch(showError(JSON.stringify(error.response.data)))
 		}
+	}
+}
+
+export function closeQuestionDetail() {
+	return {
+		type: types.CLOSE_QUESTION_DETAIL
 	}
 }
 
@@ -72,12 +78,6 @@ function addQuestions(questions) {
 		payload: {
 			questions
 		}
-	}
-}
-
-export function closeQuestionDetail() {
-	return {
-		type: types.CLOSE_QUESTION_DETAIL
 	}
 }
 
